@@ -1,0 +1,34 @@
+name: CI Pipeline - Nexus Analytics
+
+on:
+  push:
+    branches: [ "main", "feature/*" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout del repositorio
+      uses: actions/checkout@v3
+
+    - name: Configurar entorno Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.14.3" 
+    - name: Instalar dependencias del proyecto
+      run: |
+        python -m pip install --upgrade pip
+        # Instala los paquetes de tu proyecto si tienes el archivo
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        # Instala herramientas de análisis de código para Python y Notebooks
+        pip install flake8 nbqa
+
+    - name: Análisis estático de código (Linting en Notebooks)
+      run: |
+        # Revisa errores graves de sintaxis en tus Jupyter Notebooks
+        nbqa flake8 notebooks/ --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Revisa el formato general sin detener el proceso
+        nbqa flake8 notebooks/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
