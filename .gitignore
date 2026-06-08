@@ -1,0 +1,11 @@
+# Ignorar el entorno virtual
+env/
+.env
+
+# Ignorar los datos crudos y procesados
+data/
+
+# Ignorar archivos temporales de Python y Jupyter
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
