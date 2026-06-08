@@ -21,14 +21,14 @@ jobs:
     - name: Instalar dependencias del proyecto
       run: |
         python -m pip install --upgrade pip
-        # Instala los paquetes de tu proyecto si tienes el archivo
+        # Instala los paquetes del proyecto si tiene el archivo
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         # Instala herramientas de análisis de código para Python y Notebooks
         pip install flake8 nbqa
 
     - name: Análisis estático de código (Linting en Notebooks)
       run: |
-        # Revisa errores graves de sintaxis en tus Jupyter Notebooks
+        # Revisa errores graves de sintaxis en los Jupyter Notebooks
         nbqa flake8 notebooks/ --count --select=E9,F63,F7,F82 --show-source --statistics
         # Revisa el formato general sin detener el proceso
         nbqa flake8 notebooks/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
